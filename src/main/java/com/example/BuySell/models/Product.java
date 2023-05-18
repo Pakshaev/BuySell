@@ -1,6 +1,6 @@
 package com.example.BuySell.models;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,18 +17,25 @@ import java.util.List;
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(columnDefinition = "id")
     private Long id;
+    @Column(columnDefinition = "title")
     private String title;
     @Column(columnDefinition = "text")
     private String description;
+    @Column(columnDefinition = "price")
     private int price;
+    @Column(columnDefinition = "city")
     private String city;
-    private String author;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "product")
     private List<Image> images = new ArrayList<>();
     private Long previewImageId;
     private LocalDateTime dateOfCreated;
+
+    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+    @JoinColumn
+    private User user;
 
     @PrePersist
     private void init() {

@@ -1,14 +1,12 @@
 package com.example.BuySell.models;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table
@@ -21,6 +19,7 @@ public class User implements UserDetails {
     private String email;
     @Column(name ="phone_number", unique = true)
     private String phoneNumber;
+    @Column(columnDefinition = "name")
     private String name;
     private boolean active;
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -30,6 +29,8 @@ public class User implements UserDetails {
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name ="user_role", joinColumns = @JoinColumn(name = "user_id"))
     private Set<Role> roles = new HashSet<>();
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "user")
+    private List<Product> products = new ArrayList<>();
     private LocalDateTime dateOfCreated;
 
     @PrePersist
