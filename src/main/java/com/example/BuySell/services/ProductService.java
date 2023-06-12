@@ -3,7 +3,6 @@ package com.example.BuySell.services;
 import com.example.BuySell.models.Image;
 import com.example.BuySell.models.Product;
 import com.example.BuySell.models.User;
-import com.example.BuySell.repositories.ImageRepository;
 import com.example.BuySell.repositories.ProductRepository;
 import com.example.BuySell.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +12,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -56,7 +54,7 @@ public class ProductService {
     }
 
     public User getUserByPrincipal(Principal principal) {
-        if(principal == null) return new User();
+        if (principal == null) return new User();
         return userRepository.findByEmail(principal.getName());
     }
 
@@ -70,13 +68,21 @@ public class ProductService {
         return image;
     }
 
-    public void deleteProduct(Long id) {
-        productRepository.deleteById(id);
+    public void deleteProduct(User user, Long id) {
+        Product product = productRepository.findById(id).orElse(null);
+        if (product != null) {
+            if (product.getUser().getId().equals(user.getId())) {
+                productRepository.delete(product);
+                log.info("Product with id = {} was deleted", id);
+            } else {
+                log.error("User: {} haven't this product with id = {}", user.getEmail(), id);
+            }
+        } else {
+            log.error("Product with id = {} is not found", id);
+        }
     }
 
     public Product getProductById(Long id) {
         return productRepository.findById(id).orElse(null);
     }
-
-
 }

@@ -1,22 +1,16 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>BUYSELL</title>
-</head>
-<body>
-<h1>BUYSELL</h1>
-<hr>
-<h4>Панель администратора</h4>
-<table border="1">
-    <tr>
-        <th>Email</th>
-        <th>Номер телефона</th>
-        <th>Активность</th>
-        <th>Роли</th>
-        <th>Бан</th>
-        <th>Редактирование</th>
-        <th>Подробная информация</th>
-    </tr>
+<#import "blocks/template.ftlh" as t>
+<@t.template user>
+    <h1 style="text-align: center">Панель администратора</h1><hr>
+    <table class="table table-hover table-dark">
+        <tr>
+            <th scope="col">Email</th>
+            <th scope="col">Номер телефона</th>
+            <th scope="col">Активность</th>
+            <th scope="col">Роли</th>
+            <th scope="col">Бан</th>
+            <th scope="col">Редактирование</th>
+            <th scope="col">Подробная информация</th>
+        </tr>
     <#list users as user>
         <tr>
             <th>${user.email}</th>
@@ -36,5 +30,4 @@
         <h3>Пользователей нет</h3>
     </#list>
 </table>
-</body>
-</html>
+</@t.template>

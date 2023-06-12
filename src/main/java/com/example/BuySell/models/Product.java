@@ -38,7 +38,7 @@ public class Product {
     private User user;
 
     @PrePersist
-    private void init() {
+    private void onCreate() {
         dateOfCreated = LocalDateTime.now();
     }
 
